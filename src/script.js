@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function init() {
     board.innerHTML = "";
+    result.innerHTML = "";
     time = 0;
     timeDisplay.innerText = 0;
     squares = [];
