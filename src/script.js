@@ -66,6 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
           total++;
         if (
           i < (height - 1) * width &&
+          !isLeftEdge &&
           squares[i + width - 1].classList.contains("bomb")
         )
           total++;
@@ -87,23 +88,83 @@ document.addEventListener("DOMContentLoaded", () => {
     if (square.classList.contains("bomb")) {
       gameOver();
     } else {
+      square.classList.add("checked");
       let total = square.getAttribute("data");
       if (total != 0) {
-        square.classList.add("checked");
-        if (total === 1) square.classList.add("one");
-        if (total === 2) square.classList.add("two");
-        if (total === 3) square.classList.add("three");
-        if (total === 4) square.classList.add("four");
-        if (total === 5) square.classList.add("five");
-        if (total === 6) square.classList.add("six");
-        if (total === 7) square.classList.add("seven");
-        if (total === 8) square.classList.add("eight");
+        if (total == 1) square.classList.add("one");
+        if (total == 2) square.classList.add("two");
+        if (total == 3) square.classList.add("three");
+        if (total == 4) square.classList.add("four");
+        if (total == 5) square.classList.add("five");
+        if (total == 6) square.classList.add("six");
+        if (total == 7) square.classList.add("seven");
+        if (total == 8) square.classList.add("eight");
         square.innerHTML = total;
         return;
       }
+      findSafeSquares(square);
+    }
+  }
+
+  //check for safe neighbouring squares
+  function findSafeSquares(square) {
+    const currentId = square.id;
+    const isLeftEdge = square.id % width === 0;
+    const isRightEdge = square.id % width === width - 1;
+
+    if (currentId > 0 && !isLeftEdge) {
+      const newId = parseInt(currentId) - 1;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
     }
 
-    let currentId = square.id;
+    if (currentId > width - 1 && !isLeftEdge) {
+      const newId = parseInt(currentId) - width - 1;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
+    }
+
+    if (currentId > width - 1) {
+      const newId = parseInt(currentId) - width;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
+    }
+
+    if (currentId > width - 1 && !isRightEdge) {
+      const newId = parseInt(currentId) - width + 1;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
+    }
+
+    if (!isLeftEdge) {
+      const newId = parseInt(currentId) - 1;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
+    }
+
+    if (!isRightEdge) {
+      const newId = parseInt(currentId) + 1;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
+    }
+
+    if (currentId < (height - 1) * width && !isLeftEdge) {
+      const newId = parseInt(currentId) + width - 1;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
+    }
+
+    if (currentId < (height - 1) * width) {
+      const newId = parseInt(currentId) + width;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
+    }
+
+    if (currentId < (height - 1) * width && !isRightEdge) {
+      const newId = parseInt(currentId) + width + 1;
+      const newSquare = document.getElementById(newId);
+      selectSquare(newSquare);
+    }
   }
 
   function gameOver() {

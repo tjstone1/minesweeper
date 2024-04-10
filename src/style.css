@@ -3,8 +3,7 @@
 }
 
 .board {
-  height: 400px;
-  width: 400px;
+  width: fit-content;
   background-color: #bfbfbd;
   display: grid;
   grid-template-columns: repeat(30, 1fr);
@@ -18,10 +17,24 @@ button {
   height: 25px;
 }
 
-.bomb {
-  background-color: green;
+.checked {
+  border: 1px solid grey;
+  outline: none;
+  background-color: #bfbfbd;
 }
 
-.safe {
-  background-color: purple;
+.one {
+  color: red;
+}
+
+.two {
+  color: blue;
+}
+
+.three {
+  color: green;
+}
+
+.four {
+  color: purple;
 }
