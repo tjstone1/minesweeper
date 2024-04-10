@@ -1,0 +1,27 @@
+.container {
+  width: 500px;
+}
+
+.board {
+  height: 400px;
+  width: 400px;
+  background-color: #bfbfbd;
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  margin-left: 50px;
+  margin-top: 20px;
+}
+
+button {
+  border-radius: 0;
+  width: 25px;
+  height: 25px;
+}
+
+.bomb {
+  background-color: green;
+}
+
+.safe {
+  background-color: purple;
+}
