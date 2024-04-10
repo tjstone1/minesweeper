@@ -3,21 +3,38 @@ document.addEventListener("DOMContentLoaded", () => {
   const flagsLeft = document.querySelector("#flags-left");
   const result = document.querySelector(".result");
   const resetBtn = document.querySelector(".reset");
+  const timeDisplay = document.querySelector("#time");
   resetBtn.addEventListener("click", init);
-  const width = 30;
-  const height = 16;
+  let width = 30;
+  document.querySelector(":root").style.setProperty("--width", width);
+  let height = 16;
   let flags;
   let squares;
   let bombs;
   let isGameOver;
+  let time;
+  let timer;
 
   function init() {
     board.innerHTML = "";
+    time = 0;
+    timeDisplay.innerText = 0;
     squares = [];
-    bombs = 99;
+    bombs = Math.floor(width * height * 0.20625);
     flags = bombs;
     isGameOver = false;
     createBoard();
+    clearInterval(timer);
+    startCounter();
+  }
+
+  function incrementCounter() {
+    time++;
+    timeDisplay.innerText = time;
+  }
+
+  function startCounter() {
+    timer = setInterval(incrementCounter, 1000);
   }
   function createBoard() {
     flagsLeft.innerHTML = bombs;
@@ -89,7 +106,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let matches = 0;
     for (let i = 0; i < squares.length; i++) {
       if (
-        flags > 0 &&
         squares[i].classList.contains("checked") &&
         squares[i].classList.contains("safe")
       ) {
@@ -99,6 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (matches == width * height - bombs) {
       isGameOver = true;
       result.innerHTML = "You Win!";
+      clearInterval(timer);
+      console.log(time, matches);
     }
   }
 
@@ -110,9 +128,10 @@ document.addEventListener("DOMContentLoaded", () => {
       flagsLeft.innerHTML = flags;
       square.classList.remove("flag");
       square.innerHTML = "";
+
       return;
     }
-    if (flagsLeft == 0) return;
+    if (flags == 0) return;
     flags--;
     flagsLeft.innerHTML = flags;
     square.classList.add("flag");
@@ -120,13 +139,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function selectSquare(square) {
-    console.log(square);
     if (
       isGameOver ||
       square.classList.contains("checked") ||
       square.classList.contains("flag")
-    )
+    ) {
+      checkWin();
       return;
+    }
+
     if (square.classList.contains("bomb")) {
       gameOver();
     } else {
@@ -220,5 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     result.innerHTML = "You Lose!";
+    clearInterval(timer);
   }
 });
