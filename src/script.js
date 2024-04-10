@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const flagsLeft = document.querySelector("#flags-left");
   const width = 30;
   const height = 16;
+  let flags;
   let squares;
   let bombsLeft;
   let isGameOver;
@@ -10,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function init() {
     squares = [];
     bombsLeft = 99;
+    flags = bombsLeft;
     isGameOver = false;
     createBoard();
   }
@@ -29,6 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
       button.id = i;
       button.classList.add(shuffledArray[i]);
       button.addEventListener("click", () => selectSquare(button));
+      button.addEventListener("contextmenu", () => toggleFlag(button));
       board.appendChild(button);
       squares.push(button);
     }
@@ -76,6 +79,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   init();
+
+  function toggleFlag(square) {
+    if (square.classList.contains("checked")) return;
+    if (square.classList.contains("flag")) {
+      flags++;
+      flagsLeft.innerHTML = flags;
+      square.classList.remove("flag");
+      square.innerHTML = "";
+      return;
+    }
+    if (flagsLeft == 0) return;
+    flags--;
+    flagsLeft.innerHTML = flags;
+    square.classList.add("flag");
+    square.innerHTML = "🚩";
+  }
 
   function selectSquare(square) {
     console.log(square);
